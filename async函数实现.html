@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+<script>
+	// async函数实现原理Generator + 自动执行器
+	// 因为async函数返回的是一个promise对象，相当于普通函数返回一个generate函数
+	// async function example() {
+	// }
+
+	//spawn相当于generate的一个自动执行器，参数是一个 generate函数
+	function example (params) {
+		return spawn(function*() {
+
+		})
+	}
+
+	function spawn(genF) {
+		// 因为async函数返回的是一个promise对象 所以他的最外层返回的是一个promise
+		return new Promise(function(resolve, reject) {
+			// 先把spawn函数的参数这个generate函数调用一下，产生一个生成器对象
+			const gen = genF();
+			// 定义一个step函数
+			function step(nexF) {
+				let next;
+				try {
+					// next就是一个对象，对象里有done和value
+					next = nexF();
+				} catch (e) {
+					return reject(e);
+				}
+
+				// 如果done是true的话，说明迭代器已经执行完成，我们就要把promise的状态设置成resolve
+				if (next.done) {
+					return resolve(next.value);
+				}
+				// 如果done是false，把next.value的值作为一个新的promise的值，然后在then回调里去执行step方法，调用了step方法之后，
+				// step方法就会重新执行一遍，去调用第二个参数，直到迭代器遍历完成之后，返回一个resolve状态的promise
+				promise.resolve(next.value).then(
+					function(v) {
+						step(function() {
+							return gen.next(v);
+						})
+					}
+				),
+				function(e) {
+					step(function() {
+						return gen.throw(e)
+					})
+				}
+			}
+			
+			// 执行step函数，函数接受一个function，function里面执行的是生成器对象遍历执行了next方法
+			step(function() {
+				return gen.next(undefined);
+			})
+		})
+	}
+
+
+</script>
+</html>
