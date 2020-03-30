@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	11
+</body>
+<script src="./underscore.js"></script>
+<script>
+	// 这种方式是将数据源和迭代器函数都传给unique函数
+	// console.log(_.unique([1,2,2,3,3,4, 'a', 'A'], function(item) {
+	// 	return typeof item === 'string' ? item.toLocaleLowerCase() : item;
+	// }))
+
+
+	// 尝试通过将数据源传递给_构造函数，将迭代器函数传递给unique
+	// 怎么开启链式调用  instance.unique()
+	// console.log(_([1,2,2,3,3,4, 'a', 'A']).chain()
+	// .unique(function(item) {
+	// 	return typeof item === 'string' ? item.toLocaleLowerCase() : item;
+	// }).value())
+
+
+	// 专门为对象服务的map方法
+	// 迭代函数改变对象的values值
+	// 返回对象副本
+	// var obj = {name: 'max'}
+	// // map的第三个参数的作用是控制当前迭代器在执行过程中上下文所绑定的对象
+	// console.log(_.map([1,2,3], function(value, index, object) {
+	// 	console.log(this) 
+	// 	return value * 3
+	// }))
+
+
+	// 实现类似es6的rest参数的实现
+	// 把需要包装的函数丢进去，目的是为了让test函数支持rest参数，返回一个函数，赋值给restTest,然后再调用restTest函数即可
+	// 这里的参数1，会给到count，剩下的参数被包装在一个数组里面，最终再给到test函数的参数rest
+	// function test(count) {
+	// 	console.log(count);  // 应该输出[2,3,4]
+	// }
+	// var restTest = _.restArguments(test); // 包装器
+	// restTest(1,2,3,4)
+
+
+	// 摊平数组
+	// 深度展开，不传第二个参数true
+	// console.log(_.flatten([1, [2,3], [4, 5]]));
+	// 浅度展开
+	// console.log(_.flatten([1, [2, 3], [4, [[4]]]], true)); // [[4]] => [4] 
+
+	console.log(_.initial([1,2,3,4,5], 2));
+	// console.log(_.rest([1,2,3,4,5]))
+</script>
+</html>
