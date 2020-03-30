@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+<script>
+	let deepcopy = (obj) => {
+		let ret = Array.isArray(obj) ? [] : {};
+		if(obj && typeof(obj) === 'object') {
+			for(let key in obj) {
+				if(obj.hasOwnProperty(key)) {
+					if(obj[key] && typeof(obj[key]) === 'object') {
+						ret[key] = deepcopy(obj[key]);
+					} else {
+						ret[key] = obj[key]
+					}
+				}
+			}
+		}
+		return ret;
+	}
+
+	let person = {
+		name: 'll',
+		age: 26,
+		friend: {
+			name: 'hh',
+			age: 12
+		}
+	}
+
+	let p2 = deepcopy(person);
+	p2.name = 'jj';
+	p2.friend.name = 'mm';
+
+	console.log(person, '444');
+	console.log(p2, '888')
+
+
+</script>
+</html>
