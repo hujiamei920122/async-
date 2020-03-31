@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+<script>
+	var p1 = Promise.resolve(1),
+	p2 = Promise.resolve(2),
+	p3 = Promise.resolve(3);
+
+	// 实现一个promise.all
+	function promiseAll(promises) {
+		return new Promise((resolve, reject) => {
+			if(!Array.isArray(promises)) {
+				return new TypeError('arguments must be an array')
+			}
+
+			let countNum = 0;
+			let promisesNum = promises.length;
+			let result = new Array(promisesNum);
+
+			for(let i = 0; i < promisesNum; i++) {
+				(function(i) {
+					Promise.resolve(promises[i]).then(
+						function (value) {
+							countNum++;
+							result[i] = value;
+							if (countNum === promisesNum) {
+								return resolve(result)
+							}
+						},
+						function (reson) {
+							return reject(reson)
+						}
+					) 
+				})(i)
+			}
+		})
+	}
+
+	promiseAll([p1, p2, p3]).then(function(v) {
+		console.log(v, 'v')
+	})
+</script>
+</html>
